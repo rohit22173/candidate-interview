@@ -43,6 +43,37 @@ class RowRenderer extends React.Component {
   }
 }
 
+// Custom Formatter component
+class L1ButtonFormatter extends React.Component {
+  static propTypes = {
+    value: PropTypes.number.isRequired
+  };
+
+  render() {
+    const percentComplete = this.props.value + '%';
+    return (
+      <div className="l1button">
+      <button className="">Start</button>
+      </div>);
+  }
+}
+
+
+// Custom Formatter component
+class GkButtonFormatter extends React.Component {
+  static propTypes = {
+    value: PropTypes.number.isRequired
+  };
+
+  render() {
+    const percentComplete = this.props.value + '%';
+    return (
+      <div className="l2button">
+      <button className="">Start</button>
+      </div>);
+  }
+}
+
 export default class EmployeeData extends React.Component {
 constructor(props,context){
     super(props, context);
@@ -76,12 +107,12 @@ constructor(props,context){
         {
           key: 'scheduleL1',
           name: 'Schedule L1',
-          editable: true
+          formatter: L1ButtonFormatter
         },
         {
           key: 'scheduleGK',
           name: 'Schedule GK',
-          editable: true
+          formatter: GkButtonFormatter
         },
         // {
         //   key: 'finalResult',
@@ -107,6 +138,7 @@ createRows = (numberOfRows) => {
     for (let i = 1; i < numberOfRows; i++) {
       rows.push({
         id: i,
+        complete: Math.min(100, Math.round(Math.random() * 110)),
         name: 1 + i,
         testScore: i+2,
         scheduleL1: i+3,
@@ -144,6 +176,8 @@ createRows = (numberOfRows) => {
 
     this.setState({ rows });
   };
+
+
 
   render() {
     return (<ReactDataGrid
