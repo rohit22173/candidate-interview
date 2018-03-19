@@ -3,7 +3,8 @@ import ReactDataGrid from 'react-data-grid';
 import AutoComplete from 'react-autocomplete'
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
-import ButtonFormatter from '../ButtonFormatterComponent/ButtonFormatter';
+import Timer from '../timer';
+// import ButtonFormatter from '../ButtonFormatterComponent/ButtonFormatter';
 import './EmpData.css';
 const { Row } = ReactDataGrid;
 
@@ -79,12 +80,12 @@ constructor(props,context){
         {
           key: 'scheduleL1',
           name: 'Schedule L1',
-          formatter: ButtonFormatter
+          formatter: Timer        
         },
         {
           key: 'scheduleGK',
           name: 'Schedule GK',
-          formatter: ButtonFormatter
+          formatter: Timer
         },
         // {
         //   key: 'finalResult',
@@ -163,5 +164,5 @@ createRows = (numberOfRows) => {
         onGridRowsUpdated={this.handleGridRowsUpdated}
          />
     );
-  }
+      }
 }

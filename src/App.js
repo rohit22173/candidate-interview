@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import EmpData from './component/EmpDataComponent/EmpData'
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap/dist/css/bootstrap-theme.min.css';
-// import 'bootstrap/dist/js/bootstrap.min.js';
+
+
 
 class App extends Component {
   constructor(){
