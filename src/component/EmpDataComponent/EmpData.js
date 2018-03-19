@@ -3,6 +3,7 @@ import ReactDataGrid from 'react-data-grid';
 import AutoComplete from 'react-autocomplete'
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
+import ButtonFormatter from '../ButtonFormatterComponent/ButtonFormatter';
 import './EmpData.css';
 const { Row } = ReactDataGrid;
 
@@ -43,36 +44,7 @@ class RowRenderer extends React.Component {
   }
 }
 
-// Custom Formatter component
-class L1ButtonFormatter extends React.Component {
-  static propTypes = {
-    value: PropTypes.number.isRequired
-  };
 
-  render() {
-    const percentComplete = this.props.value + '%';
-    return (
-      <div className="l1button">
-      <button className="">Start</button>
-      </div>);
-  }
-}
-
-
-// Custom Formatter component
-class GkButtonFormatter extends React.Component {
-  static propTypes = {
-    value: PropTypes.number.isRequired
-  };
-
-  render() {
-    const percentComplete = this.props.value + '%';
-    return (
-      <div className="l2button">
-      <button className="">Start</button>
-      </div>);
-  }
-}
 
 export default class EmployeeData extends React.Component {
 constructor(props,context){
@@ -107,12 +79,12 @@ constructor(props,context){
         {
           key: 'scheduleL1',
           name: 'Schedule L1',
-          formatter: L1ButtonFormatter
+          formatter: ButtonFormatter
         },
         {
           key: 'scheduleGK',
           name: 'Schedule GK',
-          formatter: GkButtonFormatter
+          formatter: ButtonFormatter
         },
         // {
         //   key: 'finalResult',
@@ -141,8 +113,8 @@ createRows = (numberOfRows) => {
         complete: Math.min(100, Math.round(Math.random() * 110)),
         name: 1 + i,
         testScore: i+2,
-        scheduleL1: i+3,
-        scheduleGK: i+4,
+        scheduleL1: 'start',
+        scheduleGK: 'start',
        // finalResult: i+6
       });
     }
