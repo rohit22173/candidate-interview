@@ -5,6 +5,7 @@
   "dependencies": {
     "babel-preset-env": "1.5.2",
     "babel-preset-react": "6.24.1",
+    "immutability-helper": "^2.6.6",
     "react": "^16.2.0",
     "react-autocomplete": "^1.8.1",
     "react-data-grid": "^3.0.11",

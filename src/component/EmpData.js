@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
 import AutoComplete from 'react-autocomplete'
+import update from 'immutability-helper';
+import PropTypes from 'prop-types';
+import './EmpData.css';
+const { Row } = ReactDataGrid;
+
 //import { Editors, Formatters } from 'react-data-grid-addons';
 //const { DropDownEditor } = Editors;
 //const { DropDownFormatter } = Formatters;
@@ -9,7 +14,36 @@ import AutoComplete from 'react-autocomplete'
 
 
 //const resultArray = ['select1', 'select2', 'select3', 'select4'];
-export default class EmployeeData extends Component {
+
+class RowRenderer extends React.Component {
+  static propTypes = {
+    idx: PropTypes.string.isRequired
+  };
+
+  setScrollLeft = (scrollBy) => {
+    // if you want freeze columns to work, you need to make sure you implement this as apass through
+    this.row.setScrollLeft(scrollBy);
+  };
+
+  getRowStyle = () => {
+    return {
+      color: this.getRowBackground()
+    };
+  };
+
+  getRowBackground = () => {
+    return this.props.row.testScore > 3 ?  'green' : 'red';
+  };
+
+  render() {
+    // here we are just changing the style
+    // but we could replace this with anything we liked, cards, images, etc
+    // usually though it will just be a matter of wrapping a div, and then calling back through to the grid
+    return (<div className={this.getRowBackground()}><Row ref={ node => this.row = node } {...this.props}/></div>);
+  }
+}
+
+export default class EmployeeData extends React.Component {
 constructor(props,context){
     super(props, context);
     const counties = [
@@ -65,7 +99,9 @@ constructor(props,context){
         let originalRows = this.createRows(10);
         let rows = originalRows.slice(0);
         this.state = { sortColumn :null,sortDirection:null,rows,originalRows };
+
 }
+
 createRows = (numberOfRows) => {
     let rows = [];
     for (let i = 1; i < numberOfRows; i++) {
@@ -96,6 +132,19 @@ createRows = (numberOfRows) => {
   rowGetter = (i) => {
     return this.state.rows[i];
   };
+
+  handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
+    let rows = this.state.rows.slice();
+
+    for (let i = fromRow; i <= toRow; i++) {
+      let rowToUpdate = rows[i];
+      let updatedRow = update(rowToUpdate, {$merge: updated});
+      rows[i] = updatedRow;
+    }
+
+    this.setState({ rows });
+  };
+
   render() {
     return (<ReactDataGrid
         enableCellSelect={true}
@@ -104,7 +153,8 @@ createRows = (numberOfRows) => {
         rowGetter={this.rowGetter}
         rowsCount={3}   //{this.state.rows.length} 
         minHeight={500}
-        //onGridRowsUpdated={this.handleGridRowsUpdated}
+        rowRenderer={RowRenderer}
+        onGridRowsUpdated={this.handleGridRowsUpdated}
          />
     );
   }
