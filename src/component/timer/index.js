@@ -1,16 +1,18 @@
 import React from 'react';
 import ElapsedTime from './elapsed-time';
 import Buttons from './buttons';
+import PropTypes from 'prop-types';
 
 import './style.css';
 
 class Timer extends React.Component{
-  
+
   constructor(props){
     super(props);
     this.state = {
       timingEvents:[],
       nonce: 0,
+      isDisabled: (props.value)
     }
     
     this.addTimerEvent = this.addTimerEvent.bind(this)
@@ -40,6 +42,7 @@ class Timer extends React.Component{
         timingEvents={this.state.timingEvents}
       />
       <Buttons 
+        isDisabled = {this.state.isDisabled}
         handleClick = {this.addTimerEvent}
         timingEvents={this.state.timingEvents}
       />

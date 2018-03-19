@@ -10,7 +10,7 @@ export default class ButtonFormatter extends React.Component {
   render() {
     return (
       <div className="buttonFormatter">
-      <button className="">{this.props.value}</button>
+      <button>{this.props.value}</button>
       </div>);
   }
 }

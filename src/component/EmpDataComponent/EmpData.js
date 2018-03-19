@@ -19,7 +19,7 @@ const { Row } = ReactDataGrid;
 
 class RowRenderer extends React.Component {
   static propTypes = {
-    idx: PropTypes.string.isRequired
+    idx: PropTypes.number.isRequired
   };
 
   setScrollLeft = (scrollBy) => {
@@ -111,10 +111,9 @@ createRows = (numberOfRows) => {
     for (let i = 1; i < numberOfRows; i++) {
       rows.push({
         id: i,
-        complete: Math.min(100, Math.round(Math.random() * 110)),
         name: 1 + i,
         testScore: i+2,
-        scheduleL1: 'start',
+        scheduleL1: i+2,
         scheduleGK: 'start',
        // finalResult: i+6
       });

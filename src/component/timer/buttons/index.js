@@ -11,9 +11,10 @@ const label = props.timingEvents.length % 2 === 0
 return (
   <div className='buttons'>
     <button
+    	disabled = { props.isDisabled > 3 ? false : true }
       onClick={props.handleClick}
     >
-     {label}
+     {label} {props.isDisabled}
     </button>
   </div>
 )
