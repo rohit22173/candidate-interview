@@ -12,10 +12,12 @@ class Timer extends React.Component{
     this.state = {
       timingEvents:[],
       nonce: 0,
+      isSelected: 0,
       isDisabled: (props.value)
     }
     
     this.addTimerEvent = this.addTimerEvent.bind(this)
+    this.selectCandidate = this.selectCandidate.bind(this)
     this.tick = this.tick.bind(this)
     this.poll = setInterval(this.tick, 1000)// set milisec diff
   }
@@ -27,6 +29,12 @@ class Timer extends React.Component{
           new Date()
             
         ]
+      })
+    }
+
+    selectCandidate() {
+      this.setState ({
+        isSelected: !this.state.isSelected
       })
     }
 
@@ -44,6 +52,7 @@ class Timer extends React.Component{
       <Buttons 
         isDisabled = {this.state.isDisabled}
         handleClick = {this.addTimerEvent}
+        handleCheckBoxClick = {this.selectCandidate}
         timingEvents={this.state.timingEvents}
       />
     </div>
