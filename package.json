@@ -1,26 +1,32 @@
 {
-    "name": "assignment",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "babel-preset-env": "1.5.2",
-        "babel-preset-react": "6.24.1",
-        "format-duration": "^1.1.0",
-        "immutability-helper": "^2.6.6",
-        "react": "^15.4.0",
-        "react-autocomplete": "^1.8.1",
-        "react-data-grid": "^3.0.11",
-        "react-data-grid-addons": "^3.0.11",
-        "react-dom": "^15.4.0",
-        "react-scripts": "1.1.1"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test --env=jsdom",
-        "eject": "react-scripts eject"
-    },
-    "main": "index.js",
-    "author": "neeraj jog",
-    "license": "MIT"
+  "name": "assignment",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-preset-env": "1.5.2",
+    "babel-preset-react": "6.24.1",
+    "format-duration": "^1.1.0",
+    "immutability-helper": "^2.6.6",
+    "react": "^15.4.0",
+    "react-autocomplete": "^1.8.1",
+    "react-data-grid": "^3.0.11",
+    "react-data-grid-addons": "^3.0.11",
+    "react-dom": "^15.4.0",
+    "react-redux": "^5.0.7",
+    "react-scripts": "1.1.1",
+    "redux": "^3.7.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "main": "index.js",
+  "author": "neeraj jog",
+  "license": "MIT",
+  "devDependencies": {
+    "redux-logger": "^3.0.6"
+  }
 }

@@ -1,0 +1,17 @@
+{
+	"details": [{
+			"id": 1,
+			"name": "Rohit",
+			"testScore": 3,
+			"scheduleL1": false,
+			"scheduleGk": false
+		},
+		{
+			"id": 2,
+			"name": "Sonali",
+			"testScore": 5,
+			"scheduleL1": false,
+			"scheduleGk": false
+		}
+	]
+}

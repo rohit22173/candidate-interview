@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
 import ReactDataGrid from 'react-data-grid';
-import AutoComplete from 'react-autocomplete'
+import { connect } from 'react-redux';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
-import Timer from '../timer';
-// import ButtonFormatter from '../ButtonFormatterComponent/ButtonFormatter';
-import './EmpData.css';
+import { Toolbar } from 'react-data-grid-addons';
+import axios from 'axios';
+
+import Timer from '../component/timer';
+import * as actionCreators from '../actions/candidateActions';
+
+import './App.css';
 const { Row } = ReactDataGrid;
 
-//import { Editors, Formatters } from 'react-data-grid-addons';
-//const { DropDownEditor } = Editors;
-//const { DropDownFormatter } = Formatters;
-//const faker = require('faker');
-
-
-
-//const resultArray = ['select1', 'select2', 'select3', 'select4'];
 
 class RowRenderer extends React.Component {
   static propTypes = {
@@ -46,16 +42,9 @@ class RowRenderer extends React.Component {
 }
 
 
-
-export default class EmployeeData extends React.Component {
-constructor(props,context){
+class App extends Component {
+ constructor(props,context){
     super(props, context);
-    const counties = [
-        { id: 0, title: 'junior'},
-        { id: 1, title: 'senior'},
-        { id: 2, title: 'Lead'},
-        { id: 3, title: 'Manager'}
-      ];
 
       
     this._columns = [
@@ -86,40 +75,25 @@ constructor(props,context){
           key: 'scheduleGK',
           name: 'Schedule GK',
           formatter: Timer
-        },
-        // {
-        //   key: 'finalResult',
-        //   name: 'Final Result',
-        // //  editor: <DropDownEditor options={resultArray}/>,
-        //   // events: {
-        //   //   onDoubleClick: function() {
-        //   //     console.log('The user double clicked on title column');
-        //   //   }
-        //  // }
-        //   //formatter: DropDownFormatter
-         
-        // }
+        }
       ]
-        let originalRows = this.createRows(10);
+        let originalRows = this.props.candidateList;
+        console.log(originalRows);
         let rows = originalRows.slice(0);
         this.state = { sortColumn :null,sortDirection:null,rows,originalRows };
 
 }
 
-createRows = (numberOfRows) => {
-    let rows = [];
-    for (let i = 1; i < numberOfRows; i++) {
-      rows.push({
-        id: i,
-        name: 1 + i,
-        testScore: i+2,
-        scheduleL1: i+2,
-        scheduleGK: 'start',
-       // finalResult: i+6
-      });
-    }
-    return rows;
-  };
+componentDidMount() {
+  axios.get('../data.json')
+    .then((response) => {
+      this.props.loadCandidates(response.data.details);
+      let originalRows = this.props.candidateList;
+        console.log(originalRows);
+        let rows = originalRows.slice(0);
+        this.state = { sortColumn :null,sortDirection:null,rows,originalRows };
+    });
+  }
 
   handleGridSort = (sortColumn, sortDirection) => {
     const comparer = (a, b) => {
@@ -149,6 +123,35 @@ createRows = (numberOfRows) => {
     this.setState({ rows });
   };
 
+  handleAddRow = ({ newRowIndex }) => {
+    const newRow = {
+      value: newRowIndex,
+      userStory: '',
+      developer: '',
+      epic: ''
+    };
+
+    let rows = this.state.rows.slice();
+    rows = update(rows, {$push: [newRow]});
+    this.setState({ rows });
+  };
+
+  createRows = (numberOfRows) => {
+    let rows = [];
+    for (let i = 1; i < numberOfRows; i++) {
+      rows.push({
+        id: i,
+        name: 1 + i,
+        testScore: i+2,
+        scheduleL1: i+2,
+        scheduleGK: 'start',
+       // finalResult: i+6
+      });
+    }
+    return rows;
+  };
+
+
 
 
   render() {
@@ -157,11 +160,28 @@ createRows = (numberOfRows) => {
         onGridSort={this.handleGridSort}
         columns={this._columns}
         rowGetter={this.rowGetter}
-        rowsCount={3}   //{this.state.rows.length} 
+        rowsCount={this.state.rows.length}   //{this.state.rows.length} 
         minHeight={500}
+        toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
         rowRenderer={RowRenderer}
         onGridRowsUpdated={this.handleGridRowsUpdated}
          />
     );
-      }
+    }
 }
+
+const mapStateToProps = (state) => {
+  return state.candidateReducer
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadCandidates : (candidateList) => {
+        dispatch(
+        actionCreators.loadCandidates(candidateList)
+      );
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
