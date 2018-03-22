@@ -3,13 +3,17 @@ import ReactDataGrid from 'react-data-grid';
 import { connect } from 'react-redux';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
-import { Toolbar } from 'react-data-grid-addons';
+import { Toolbar,Editors, Formatters } from 'react-data-grid-addons';
 import axios from 'axios';
 
 import Timer from '../component/timer';
 import * as actionCreators from '../actions/candidateActions';
-
 import './App.css';
+
+const { DropDownEditor } = Editors;
+const { DropDownFormatter } = Formatters;
+
+
 const { Row } = ReactDataGrid;
 
 
@@ -46,7 +50,7 @@ class App extends Component {
  constructor(props,context){
     super(props, context);
 
-      
+    const resultArray = ['L1Reject', 'L2Reject', 'L3Reject', 'Selected']; 
     this._columns = [
         {
           key: 'id',
@@ -75,6 +79,18 @@ class App extends Component {
           key: 'scheduleGK',
           name: 'Schedule GK',
           formatter: Timer
+        },
+        {
+          key: 'finalResult',
+          name: 'Final Result',
+         editor: <DropDownEditor options={resultArray}/>,
+          events: {
+            onClick: function() {
+             
+            }
+         },
+         // formatter: DropDownFormatter
+         
         }
       ]
         let originalRows = this.props.candidateList;
@@ -145,7 +161,7 @@ componentDidMount() {
         testScore: i+2,
         scheduleL1: i+2,
         scheduleGK: 'start',
-       // finalResult: i+6
+        finalResult: ''
       });
     }
     return rows;
@@ -157,12 +173,12 @@ componentDidMount() {
   render() {
     return (<ReactDataGrid
         enableCellSelect={true}
-        onGridSort={this.handleGridSort}
+        onGridSort={this.handleGridSort.bind(this)}
         columns={this._columns}
         rowGetter={this.rowGetter}
         rowsCount={this.state.rows.length}   //{this.state.rows.length} 
         minHeight={500}
-        toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
+        toolbar={<Toolbar onAddRow={this.handleAddRow.bind(this)}/>}
         rowRenderer={RowRenderer}
         onGridRowsUpdated={this.handleGridRowsUpdated}
          />
