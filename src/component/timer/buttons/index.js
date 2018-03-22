@@ -13,8 +13,9 @@ const checkboxText = 'Selected'
 return (
   <div className='buttons '>
     <button
-       className='btn btn-primary'
-    	disabled = { props.isDisabled > 3 ? false : true }
+      className='btn btn-primary'
+      // disabled = { props.isDisabled > 3 ? false : true }
+      disabled = { props.isDisabled == false ? false : true }
       onClick={props.handleClick}
     >
      {label}

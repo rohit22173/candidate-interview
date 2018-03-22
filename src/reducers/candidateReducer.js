@@ -6,7 +6,7 @@ let defaultState = {
         name: 2,
         testScore: 3,
         scheduleL1: 3,
-        scheduleGK: 'start',
+        scheduleGK: 3,
        // finalResult: i+6
       }
 	]
