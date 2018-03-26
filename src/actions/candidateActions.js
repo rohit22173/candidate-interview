@@ -18,6 +18,12 @@ export function loadCandidates(candidatesList) {
 	}
 }
 
+export function startTimer (isTimerStart) {
+	return {
+		type: 'START_TIMER',
+		payload: isTimerStart
+	}
+}
 
 
 export function addName(name) {

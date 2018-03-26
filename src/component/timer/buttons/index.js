@@ -14,8 +14,7 @@ return (
   <div className='buttons '>
     <button
        className='btn btn-primary'
-    	disabled = { props.isDisabled > 3 ? false : true }
-      onClick={props.handleClick}
+       onClick={props.handleClick}
     >
      {label}
     </button>
