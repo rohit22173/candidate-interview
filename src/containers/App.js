@@ -3,13 +3,17 @@ import ReactDataGrid from 'react-data-grid';
 import { connect } from 'react-redux';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
-import { Toolbar } from 'react-data-grid-addons';
+import { Toolbar,Editors, Formatters } from 'react-data-grid-addons';
 import axios from 'axios';
 
 import Timer from '../component/timer';
 import * as actionCreators from '../actions/candidateActions';
-
 import './App.css';
+
+const { DropDownEditor } = Editors;
+const { DropDownFormatter } = Formatters;
+
+
 const { Row } = ReactDataGrid;
 
 
@@ -46,7 +50,7 @@ class App extends Component {
  constructor(props,context){
     super(props, context);
 
-      
+    const resultArray = ['L1Reject', 'L2Reject', 'L3Reject', 'Selected']; 
     this._columns = [
         {
           key: 'id',
@@ -75,7 +79,20 @@ class App extends Component {
           key: 'scheduleGK',
           name: 'Schedule GK',
           formatter: Timer
+        },
+        {
+          key: 'finalResult',
+          name: 'Final Result',
+         editor: <DropDownEditor options={resultArray}/>,
+          events: {
+            onClick: function() {
+             
+            }
+         },
+         // formatter: DropDownFormatter
+         
         }
+       
       ]
         let originalRows = this.props.candidateList;
         console.log(originalRows);
@@ -84,6 +101,18 @@ class App extends Component {
 
 }
 
+deleteRows(id) {
+  let rows = this.state.rows.slice();
+  this.state.selectedIds.map( function (value) {
+  rows.forEach(function(result, index) {
+  if(result[id] === value) {
+  rows.splice(index, 1);
+  }
+  });
+  });
+  this.setState({ rows });
+  }
+
 componentDidMount() {
   axios.get('../data.json')
     .then((response) => {
@@ -91,7 +120,7 @@ componentDidMount() {
       let originalRows = this.props.candidateList;
         console.log(originalRows);
         let rows = originalRows.slice(0);
-        this.state = { sortColumn :null,sortDirection:null,rows,originalRows };
+        this.setState( { sortColumn :null,sortDirection:null,rows,originalRows });
     });
   }
 
@@ -104,7 +133,7 @@ componentDidMount() {
       }
     };
     const rows = sortDirection === 'NONE' ? this.state.originalRows.slice(0) : this.state.rows.sort(comparer);
-    //this.setState({ sortColumn: sortColumn, sortDirection: sortDirection });
+  
     this.setState({ rows });
   }
   rowGetter = (i) => {
@@ -123,12 +152,24 @@ componentDidMount() {
     this.setState({ rows });
   };
 
+  _delete() {
+    let rows = this.state.rows.slice();
+    this.state.selectedIds.map( function (value) {
+    rows.forEach(function(result, index) {
+    if(result['id'] === value) {
+    rows.splice(index, 1);
+    }
+    });
+    });
+    this.setState({ rows });
+    }
+
   handleAddRow = ({ newRowIndex }) => {
     const newRow = {
-      value: newRowIndex,
-      userStory: '',
-      developer: '',
-      epic: ''
+      id: newRowIndex+1,
+      name: '',
+      testScore: '',
+      scheduleL1: ''
     };
 
     let rows = this.state.rows.slice();
@@ -145,7 +186,8 @@ componentDidMount() {
         testScore: i+2,
         scheduleL1: i+2,
         scheduleGK: 'start',
-       // finalResult: i+6
+        finalResult: '',
+        delete:''
       });
     }
     return rows;
@@ -157,14 +199,15 @@ componentDidMount() {
   render() {
     return (<ReactDataGrid
         enableCellSelect={true}
-        onGridSort={this.handleGridSort}
+        onGridSort={this.handleGridSort.bind(this)}
         columns={this._columns}
         rowGetter={this.rowGetter}
         rowsCount={this.state.rows.length}   //{this.state.rows.length} 
         minHeight={500}
-        toolbar={<Toolbar onAddRow={this.handleAddRow}/>}
+        toolbar={<Toolbar onAddRow={this.handleAddRow.bind(this) }  onDeleteRow={this._delete.bind(this)}/>}
         rowRenderer={RowRenderer}
         onGridRowsUpdated={this.handleGridRowsUpdated}
+        enableRowSelect={true}
          />
     );
     }
