@@ -12,12 +12,13 @@ class Timer extends React.Component{
       timingEvents:[],
       nonce: 0,
       isSelected: 0,
-      isDisabled: (props.value)
+      isDisabled: (props.isDisabled)
         }
+        console.log('dfadf', this.props);
     this.addTimerEvent = this.addTimerEvent.bind(this)
     this.selectCandidate = this.selectCandidate.bind(this)
     this.tick = this.tick.bind(this)
-    this.poll = setInterval(this.tick, 1000)// set milisec diff
+    this.poll = setInterval(this.tick, 0)// set milisec diff
   }
 
     addTimerEvent(){
@@ -27,13 +28,12 @@ class Timer extends React.Component{
           new Date()
             
         ]
-      })
+      });
+      this.props.handleCustomClick(this.state);
     }
 
     selectCandidate() {
-      this.setState ({
-        isSelected: !this.state.isSelected
-      })
+      this.props.handleCheckBoxClick(this.props.dependentValues);
     }
 
     tick(){

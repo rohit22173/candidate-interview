@@ -24,8 +24,20 @@ export function startTimer (isTimerStart) {
 		payload: isTimerStart
 	}
 }
-
-
+export function selectL1 (row) {
+	row.scheduleL1 = (row.scheduleL1) ? false : true;
+	return {
+		type: 'SELECT_L1',
+		payload: row
+	}
+}
+export function selectGk (row) {
+	row.scheduleGk = (row.scheduleGk) ? false : true;
+	return {
+		type: 'SELECT_GK',
+		payload: row
+	}
+}
 export function addName(name) {
 	return {
 		type: 'ADD_NAME',

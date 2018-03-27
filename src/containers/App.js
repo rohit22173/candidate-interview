@@ -73,12 +73,14 @@ class App extends Component {
         {
           key: 'scheduleL1',
           name: 'Schedule L1',
-          formatter: Timer        
+          formatter: <Timer handleCheckBoxClick={this.props.selectL1} handleCustomClick={this.handleClick} isDisabled={ (this.props.candidateList.testScore) > 3 ? true : false}/>,
+          getRowMetaData: (row) => row      
         },
         {
           key: 'scheduleGK',
           name: 'Schedule GK',
-          formatter: Timer
+          formatter: <Timer handleCheckBoxClick={this.props.selectGk} handleCustomClick={this.handleClick} isDisabled={this.props.candidateList.scheduleL1}/>,
+          getRowMetaData: (row) => row
         },
         {
           key: 'finalResult',
@@ -98,8 +100,14 @@ class App extends Component {
         console.log(originalRows);
         let rows = originalRows.slice(0);
         this.state = { sortColumn :null,sortDirection:null,rows,originalRows };
+        console.log(this.props);
 
 }
+
+handleClick() {
+  console.log(arguments);
+}
+
 
 deleteRows(id) {
   let rows = this.state.rows.slice();
@@ -214,11 +222,22 @@ componentDidMount() {
 }
 
 const mapStateToProps = (state) => {
+  console.log('state', state);
   return state.candidateReducer
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    selectGk: (row) => {
+      dispatch(
+      actionCreators.selectGk(row)
+      );
+    },
+    selectL1 : (row) => {
+      dispatch(
+      actionCreators.selectL1(row)
+      );
+    },
     loadCandidates : (candidateList) => {
         dispatch(
         actionCreators.loadCandidates(candidateList)
