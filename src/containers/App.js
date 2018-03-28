@@ -79,7 +79,7 @@ class App extends Component {
         {
           key: 'scheduleGK',
           name: 'Schedule GK',
-          formatter: <Timer handleCheckBoxClick={this.props.selectGk} handleCustomClick={this.handleClick} isDisabled={this.props.candidateList.scheduleL1}/>,
+          formatter: <Timer handleCheckBoxClick={this.props.selectGk} handleCustomClick={this.handleClick} isDisabled={(this.props.candidateList.testScore) > 3 ? true : false}/>,
           getRowMetaData: (row) => row
         },
         {
